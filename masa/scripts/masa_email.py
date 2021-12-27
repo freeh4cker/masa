@@ -1,5 +1,5 @@
 ##########################################################################
-# allow to filter MASA's freedivers given some criteria                  #
+# allow to filter MASA's freedivers given some criteria                 #
 # Copyright (C) 2022  Bertrand Néron                                     #
 #                                                                        #
 # This file is part of masa package.                                     #
