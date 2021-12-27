@@ -44,7 +44,9 @@ def main(args=None):
     args = sys.argv[1:] if args is None else args
     parsed_args = parse_args(args)
 
-    data = pd.read_csv('./data/masa.tsv', sep='\t', comment='#')
+    data = pd.read_csv(os.path.join(masa.DATA, 'masa.tsv'),
+                       sep='\t',
+                       comment='#')
 
     if parsed_args.autonomie_absolute_piscine:
         emails = masa.autonomie_absolue_piscine(data)
