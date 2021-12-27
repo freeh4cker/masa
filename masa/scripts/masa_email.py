@@ -28,13 +28,22 @@ import masa
 
 def parse_args(args):
     parser = argparse.ArgumentParser(description='generate email list')
-    parser.add_argument('--autonomie-absolue-piscine')
-    parser.add_argument('--autonomie-relative-piscine')
-    parser.add_argument('--fosse')
-    parser.add_argument('--rifaa')
-    parser.add_argument('--no-rifaa')
+    parser.add_argument('--autonomie-absolue-piscine',
+                        default='today')
+    parser.add_argument('--autonomie-relative-piscine',
+                        default='today')
+    parser.add_argument('--fosse',
+                        default='today')
+    parser.add_argument('--rifaa',
+                        action='store_true',
+                        default=False)
+    parser.add_argument('--no-rifaa',
+                        action='store_true',
+                        default=False
+                        )
     parser.add_argument('--valid',
-                        help="list of email with valid caci")
+                        default='today',
+                        help="list of email with valid cac at the sepcified date (default=today)")
 
     parsed_args = parser.parse_args()
     return parsed_args
@@ -48,7 +57,7 @@ def main(args=None):
                        sep='\t',
                        comment='#')
 
-    if parsed_args.autonomie_absolute_piscine:
+    if parsed_args.autonomie_absolue_piscine:
         emails = masa.autonomie_absolue_piscine(data)
     elif parsed_args.autonomie_relative_piscine:
         emails = masa.autonomie_relative_piscine(data)
