@@ -1,10 +1,16 @@
+from time import strftime, localtime
+import pkg_resources
+
 import pandas as pd
+
+__version__ = '{}'.format(strftime("%Y%m%d", localtime()))
+DATA = pkg_resources.resource_filename('masa', "data")
 
 
 def to_emails(data):
     """
     :param data:
-    :return: the list of emails of freedivesr in data
+    :return: the list of emails of freedivers in data
     :rtype: list of string
     """
     emails = data.email.to_list()
@@ -59,17 +65,17 @@ def all(data):
     return to_emails(data)
 
 
-def _certif_valid(data, delta):
-    """
-
-    :param data:
-    :param int delta:
-    :return:
-    """
-    data = data.loc[(data.CACI) | (data.QS)]
-    today = pd.to_datetime('today').normalize()
-    data = data.loc[today - data.date < pd.Timedelta(f"{delta} days")]
-    return data
+# def _certif_valid(data, delta):
+#     """
+#
+#     :param data:
+#     :param int delta:
+#     :return:
+#     """
+#     data = data.loc[(data.CACI) | (data.QS)]
+#     today = pd.to_datetime('today').normalize()
+#     data = data.loc[today - data.date < pd.Timedelta(f"{delta} days")]
+#     return data
 
 
 def certif_valid_at(data, target_date='today'):
@@ -87,5 +93,5 @@ def certif_valid_at(data, target_date='today'):
 
 
 def warning(data):
-    date= today + 2 weeks
-    return _certif_valid_at(data, target_data=date)
+    date= "today + 2 weeks"
+    return certif_valid_at(data, target_data=date)
