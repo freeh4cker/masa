@@ -42,4 +42,4 @@ doc/build/
 #############
 # data file #
 #############
-data/masa.tsv
+masa/data/masa.tsv
