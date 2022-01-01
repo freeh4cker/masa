@@ -1,8 +1,8 @@
 ##########################################################################
-# allow to filter MASA's freedivers given some criteria                 #
+# allow to filter MASA's freedivers given some criteria                  #
 # Copyright (C) 2022  Bertrand Néron                                     #
 #                                                                        #
-# This file is part of masa package.                                     #
+# This file is part of filter_apnee package.                             #
 #                                                                        #
 # This program is free software: you can redistribute it and/or modify   #
 # it under the terms of the GNU General Public License as published by   #
@@ -21,54 +21,131 @@
 import sys
 import os
 import argparse
-import pandas as pd
+from textwrap import dedent
 
 import masa
+import masa.utils
 
 
 def parse_args(args):
-    parser = argparse.ArgumentParser(description='generate email list')
-    parser.add_argument('--autonomie-absolue-piscine',
-                        default='today')
-    parser.add_argument('--autonomie-relative-piscine',
-                        default='today')
-    parser.add_argument('--fosse',
-                        default='today')
-    parser.add_argument('--rifaa',
+    parser = argparse.ArgumentParser(formatter_class=argparse.RawTextHelpFormatter,
+                                     description=dedent("""
+ __  __    _    ____    _    
+|  \/  |  / \  / ___|  / \   
+| |\/| | / _ \ \___ \ / _ \  
+| |  | |/ ___ \ ___) / ___ \ 
+|_|  |_/_/   \_\____/_/   \_\\  freediver filtering software
+    
+    
+"""))
+    exclusive_opt = parser.add_mutually_exclusive_group()
+    exclusive_opt.add_argument('--autonomie-absolue-piscine',
+                        nargs='?',
+                        type=masa.utils.parse_date,
+                        const='today',
+                        help="""list of emails with valid CACI or QS at the specified date (yyyy-mm-dd) 
+and allow to dive in autonomie absolue in pool (default=today)""")
+    exclusive_opt.add_argument('--autonomie-relative-piscine',
+                        nargs='?',
+                        const='today',
+                        help="""list of emails with valid CACI or QS at the specified date (yyyy-mm-dd) 
+and allow to dive in autonomie relative in pool (default=today)""")
+    exclusive_opt.add_argument('--fosse',
+                        nargs='?',
+                        type=masa.utils.parse_date,
+                        const='today',
+                        help="""list of emails with valid CACI or QS at the specified date (yyyy-mm-dd) 
+and allow to dive at VLG (default=today)""")
+    exclusive_opt.add_argument('--profondeur',
+                               nargs='?',
+                               type=masa.utils.parse_date,
+                               const='today',
+                               help="""list of emails with valid CACI at the specified date (yyyy-mm-dd) 
+(default=today)""")
+    exclusive_opt.add_argument('--rifaa',
                         action='store_true',
-                        default=False)
-    parser.add_argument('--no-rifaa',
-                        action='store_true',
-                        default=False
+                        default=False,
+                        help="freedivers who held RIFAA"
                         )
-    parser.add_argument('--valid',
-                        default='today',
-                        help="list of email with valid cac at the sepcified date (default=today)")
-
-    parsed_args = parser.parse_args()
-    return parsed_args
+    exclusive_opt.add_argument('--no-rifaa',
+                        action='store_true',
+                        default=False,
+                        help="freedivers who do NOT held RIFAA"
+                        )
+    exclusive_opt.add_argument('--valid',
+                        nargs='?',
+                        type=masa.utils.parse_date,
+                        const='today',
+                        help="list of emails with valid CACI or QS at the specified date (yyyy-mm-dd) (default=today)")
+    exclusive_opt.add_argument('--not-valid',
+                        nargs='?',
+                        type=masa.utils.parse_date,
+                        const='today',
+                        help="list of emails with NO valid CACI or QS at the specified date (yyyy-mm-dd) (default=today)")
+    exclusive_opt.add_argument('--warning',
+                        nargs='?',
+                        type=int,
+                        const=15,
+                        help="""list of emails with valid CACI or QS today but
+expire at today + delta time (in days) (default=15 days)""")
+    exclusive_opt.add_argument('--all',
+                        action='store_true',
+                        default=False,
+                        help="""list of emails of all freedivers""")
+    parser.add_argument("--version",
+                        action="version",
+                        version=masa.get_version_message()
+                        )
+    parser.add_argument('-v', "--verbose",
+                        default=0,
+                        action="count",
+                        help="""increase verbosity
+-v displays email in long version "Prenom Nom" <email>'
+-vv displays all info Prenom Nom indoor/outdoor rifaa CACI|QS date email"""
+                        )
+    parsed_args = parser.parse_args(args)
+    return parser, parsed_args
 
 
 def main(args=None):
     args = sys.argv[1:] if args is None else args
-    parsed_args = parse_args(args)
+    parser, parsed_args = parse_args(args)
 
-    data = pd.read_csv(os.path.join(masa.DATA, 'masa.tsv'),
-                       sep='\t',
-                       comment='#')
-
+    data = masa.parse_data(os.path.join(masa.__DATA__, 'masa.tsv'))
     if parsed_args.autonomie_absolue_piscine:
-        emails = masa.autonomie_absolue_piscine(data)
+        selection = masa.autonomie_absolue_piscine(data, target_date=parsed_args.autonomie_absolue_piscine)
     elif parsed_args.autonomie_relative_piscine:
-        emails = masa.autonomie_relative_piscine(data)
+        selection = masa.autonomie_relative_piscine(data, target_date=parsed_args.autonomie_relative_piscine)
     elif parsed_args.fosse:
-        emails = masa.fosse(data)
+        selection = masa.fosse(data, target_date=parsed_args.fosse)
+    elif parsed_args.profondeur:
+        selection = masa.profondeur(data, target_date=parsed_args.profondeur)
     elif parsed_args.rifaa:
-        emails = masa.rifaa(data)
+        selection = masa.rifaa(data)
     elif parsed_args.no_rifaa:
-        emails = masa.no_rifaa(data)
+        selection = masa.no_rifaa(data)
+    elif parsed_args.valid:
+        selection = masa.certif_valid_at(data, target_date=parsed_args.valid)
+    elif parsed_args.not_valid:
+        selection = masa.certif_not_valid_at(data, target_date=parsed_args.not_valid)
+    elif parsed_args.warning:
+        selection = masa.warning(data, time_delta=parsed_args.warning)
+    elif parsed_args.all:
+        selection = data
     else:
-        emails = all(data)
+        print("Please select an option\n")
+        parser.print_usage()
+        sys.exit(2)
 
-    print(", ".join(emails))
+    if parsed_args.verbose == 0:
+        emails = masa.to_emails(selection, verbose=False)
+        sep = ', '
+    elif parsed_args.verbose == 1:
+        emails = masa.to_emails(selection, verbose=True)
+        sep = ', '
+    else:
+        emails = masa.to_string(selection)
+        sep = '\n'
+
+    print(sep.join(emails))
 
