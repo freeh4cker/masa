@@ -1,0 +1,11 @@
+nom	prenom	email	indoor	outdoor	rifaa	CACI	QS	date
+TOTO	rien	toto@rien.org	rien	rien	False	True	False	2021-01-01
+TITI	ap-rien	titi@ap.org	AP	rien	True	True	False	2021-02-01
+TITI	ap-rien-no-riffa	titi.no_riffa@ap.org	AP	rien	False	True	False	2021-02-01
+TUTU	acp-rien	tutu@acp.org	ACP	rien	False	True	False	2021-03-01
+TATA	rien-ael	tata@ael.org	rien	AEL	True	True	False	2021-04-01
+truc	ap-ael	truc@aeel.org	AP	AEL	False	True	False	2021-05-01
+bidule	ap-acel	bidule@acel.org	AP	ACEL	False	True	False	2021-06-01
+foo	ap-aeel	foo@aeel.org	AP	AEEL	True	True	False	2021-07-01
+bar	ap-aeel	bar@aeel.qs	AP	AEEL	True	False	True	2021-08-01
+nulle	ap-aeel	null@aeel.void	AP	AEEL	True	False	False	2021-08-01
