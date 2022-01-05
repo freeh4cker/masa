@@ -175,10 +175,11 @@ def ligne(data, ligne):
     :return: The data for freedivers who dive in ligne *ligne*
     :rtype: :class:`pandas.DataFrame` object
     """
-    if ligne > 2 or ligne < 0:
-        raise ValueError(f"bad value for ligne. ligne should be 0 > int ligne > 3 got : {ligne}")
-    sel = data.loc[data.ligne == ligne]
-    return sel
+    if 0 < ligne < 3:
+        sel = data.loc[data.ligne == ligne]
+        return sel
+    else:
+        raise ValueError(f"bad value for ligne. ligne should be 0 < int ligne < 3 got : {ligne}")
 
 
 def certif_valid_at(data, target_date='today'):
