@@ -178,6 +178,21 @@ masa: error: argument --valid: cannot parse '2022-30-01' as date: month must be 
                          'toto@rien.org, titi@ap.org, titi.no_riffa@ap.org, tutu@acp.org, tata@ael.org, truc@aeel.org, '
                          'bidule@acel.org, foo@aeel.org, bar@aeel.qs, null@aeel.void')
 
+    def test_ligne(self):
+        cmd = "masa --all --l1"
+        with self.catch_io(out=True):
+            masa_email.main(args=cmd.split()[1:])
+            emails = sys.stdout.getvalue().strip()
+        self.assertEqual(emails,
+                         'toto@rien.org, titi@ap.org, titi.no_riffa@ap.org, truc@aeel.org')
+
+        cmd = "masa --all --l2"
+        with self.catch_io(out=True):
+            masa_email.main(args=cmd.split()[1:])
+            emails = sys.stdout.getvalue().strip()
+        self.assertEqual(emails,
+                         'tutu@acp.org, tata@ael.org, bidule@acel.org, foo@aeel.org, bar@aeel.qs, null@aeel.void')
+
     def test_verbose(self):
         cmd = "masa --all -v"
         with self.catch_io(out=True):
