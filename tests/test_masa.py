@@ -154,6 +154,18 @@ class TestMasa(MasaTest):
             list(no_rifaa.index),
             [0, 2, 3, 5, 6])
 
+    def test_ligne(self):
+        data = masa.parse_data(self.path)
+        l1 = masa.ligne(data, 1)
+        self.assertListEqual(
+            list(l1.index),
+            [0, 1, 2, 5])
+
+        with self.assertRaises(ValueError) as ctx:
+            masa.ligne(data, 0)
+        self.assertEqual(str(ctx.exception),
+                         "bad value for ligne. ligne should be 0 < int ligne < 3 got : 0")
+
     def test_certif_valid_at(self):
         data = masa.parse_data(self.path)
         today = self.generate_date('today', len(data))
