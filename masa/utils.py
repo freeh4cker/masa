@@ -18,15 +18,40 @@
 # along with this program.  If not, see <https://www.gnu.org/licenses/>. #
 ##########################################################################
 
+import os
 import argparse
 
 import pandas as pd
 
 
 def parse_date(value):
+    """
+
+    :param str value: value parsed by command line parser
+    :return: True if value can be parse as date
+    :raises argparse.ArgumentTypeError: cannot be parsed as date
+    """
     try:
         pd.to_datetime(value).normalize()
         return value
     except Exception as err:
         raise argparse.ArgumentTypeError(f"cannot parse '{value}' as date: {err}")
+
+
+def file(value):
+    """
+
+    :param str value: value parsed by command line parser
+    :return: True if value is a file
+    :raises argparse.ArgumentTypeError: if value is not an existing file
+    """
+    if os.path.exists(value):
+        if os.path.isfile(value):
+            return value
+        else:
+            raise argparse.ArgumentTypeError(f"'{value}' is not a regular file")
+    else:
+        raise argparse.ArgumentTypeError(f"'{value}' no such file")
+
+
 
