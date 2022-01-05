@@ -19,10 +19,10 @@ the output can be a
 
 .. code-block:: text
 
-    Prenom Nom_1          indoor/outdoor RIFAA     CACI      2021-09-20  email@domain.org
-    Prenom Nom_2          indoor/outdoor NO RIFAA  CACI      2021-09-20  email@domain.org
-    Prenom Nom_3          indoor/outdoor RIFAA     QS        2021-09-20  email@domain.org
-    Prenom Nom_4          indoor/outdoor RIFAA     NO certif  2021-09-20  email@domain.org
+    Prenom Nom_1          indoor/outdoor RIFAA     CACI      2021-09-20  L2 email@domain.org
+    Prenom Nom_2          indoor/outdoor NO RIFAA  CACI      2021-09-20  L1 email@domain.org
+    Prenom Nom_3          indoor/outdoor RIFAA     QS        2021-09-20  L1 email@domain.org
+    Prenom Nom_4          indoor/outdoor RIFAA     NO certif 2021-09-20  L2 email@domain.org
 
 if no date (in yyyy-mm-dd format) is provided *today* is used
 
@@ -35,6 +35,12 @@ Displays the freedivers emails who are eligible to participate at *VLG fosse* to
 Displays the freedivers emails who are eligible to participate at VLG fosse the 30th June of 2021
 
 :code:`masa --fosse 2021-06-30`
+
+Displays the freedivers emails who are in *ligne 1* and are eligible to participate at VLG fosse the 30th June of 2021
+
+:code:`masa --fosse 2021-06-30 --l1`
+
+
 
 The available options are listed bellow
 .. raw::
@@ -58,6 +64,9 @@ The available options are listed bellow
                             and allow to dive in autonomie relative in pool (default=today)
       --fosse [FOSSE]       list of emails with valid CACI or QS at the specified date (yyyy-mm-dd)
                             and allow to dive at VLG (default=today)
+      --profondeur [PROFONDEUR]
+                            list of emails with valid CACI at the specified date (yyyy-mm-dd)
+                            (default=today)
       --rifaa               freedivers who held RIFAA
       --no-rifaa            freedivers who do NOT held RIFAA
       --valid [VALID]       list of emails with valid CACI or QS at the specified date (yyyy-mm-dd) (default=today)
@@ -66,6 +75,12 @@ The available options are listed bellow
       --warning [WARNING]   list of emails with valid CACI or QS today but
                             expire at today + delta time (in days) (default=15 days)
       --all                 list of emails of all freedivers
+      --l1                  Filter only divers in Ligne 1.
+                            - This option must be combined with previous ones.
+                            - This option is mutually exclusive with --L2
+      --l2                  Filter only divers in Ligne 2.
+                            - This option must be combined with previous ones.
+                            - This option is mutually exclusive with --L1
       --version             show program's version number and exit
       -v, --verbose         increase verbosity
                             -v displays email in long version "Prenom Nom" <email>'
