@@ -92,6 +92,23 @@ expire at today + delta time (in days) (default=15 days)""")
                         action='store_true',
                         default=False,
                         help="""list of emails of all freedivers""")
+    ligne_opt = parser.add_mutually_exclusive_group()
+    ligne_opt.add_argument('--l1',
+                           dest='ligne_1',
+                           action='store_true',
+                           default=False,
+                           help="""Filter only divers in Ligne 1. 
+- This option must be combined with previous ones.
+- This option is mutually exclusive with --L2"""
+                           )
+    ligne_opt.add_argument('--l2',
+                           dest='ligne_2',
+                           action='store_true',
+                           default=False,
+                           help="""Filter only divers in Ligne 2. 
+- This option must be combined with previous ones.
+- This option is mutually exclusive with --L1"""
+                           )
     parser.add_argument("--version",
                         action="version",
                         version=masa.get_version_message()
@@ -136,6 +153,11 @@ def main(args=None):
         print("Please select an option\n")
         parser.print_usage()
         sys.exit(2)
+
+    if parsed_args.ligne_1:
+        selection = masa.ligne(selection, ligne=1)
+    elif parsed_args.ligne_2:
+        selection = masa.ligne(selection, ligne=2)
 
     if parsed_args.verbose == 0:
         emails = masa.to_emails(selection, verbose=False)

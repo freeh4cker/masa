@@ -80,7 +80,7 @@ def to_string(data):
             caci = 'NO certif'
 
         rifaa = 'RIFAA' if row.rifaa else 'NO RIFAA'
-        return f"{name: <25}{level: <11}{rifaa: <10}{caci: <10}{row.date.strftime('%Y-%m-%d')}  {row.email}"
+        return f"{name: <25}{level: <11}{rifaa: <10}{caci: <10}{row.date.strftime('%Y-%m-%d')}  L{row.ligne} {row.email} "
 
     return data.apply(format, axis=1)
 
@@ -164,6 +164,20 @@ def no_rifaa(data):
     :rtype: :class:`pandas.DataFrame` object
     """
     sel = data.loc[-data.rifaa]
+    return sel
+
+
+def ligne(data, ligne):
+    """
+
+    :param data: the data related to the CACI
+    :type data: :class:`pandas.DataFrame` object
+    :return: The data for freedivers who dive in ligne *ligne*
+    :rtype: :class:`pandas.DataFrame` object
+    """
+    if ligne > 2 or ligne < 0:
+        raise ValueError(f"bad value for ligne. ligne should be 0 > int ligne > 3 got : {ligne}")
+    sel = data.loc[data.ligne == ligne]
     return sel
 
 
