@@ -109,6 +109,10 @@ expire at today + delta time (in days) (default=15 days)""")
 - This option must be combined with previous ones.
 - This option is mutually exclusive with --L1"""
                            )
+    parser.add_argument('--data',
+                        type=masa.utils.file,
+                        help="""The path to the 'masa.tsv' data file, by default provide with release"""
+                        )
     parser.add_argument("--version",
                         action="version",
                         version=masa.get_version_message()
@@ -128,7 +132,12 @@ def main(args=None):
     args = sys.argv[1:] if args is None else args
     parser, parsed_args = parse_args(args)
 
-    data = masa.parse_data(os.path.join(masa.__DATA__, 'masa.tsv'))
+    if parsed_args.data:
+        data_file = parsed_args.data
+    else:
+        data_file = os.path.join(masa.__DATA__, 'masa.tsv')
+
+    data = masa.parse_data(data_file)
     if parsed_args.autonomie_absolue_piscine:
         selection = masa.autonomie_absolue_piscine(data, target_date=parsed_args.autonomie_absolue_piscine)
     elif parsed_args.autonomie_relative_piscine:
