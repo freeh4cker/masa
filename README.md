@@ -8,12 +8,12 @@ the output can be a
 * list of emails: *email_1@domain.org, email_2@domain.org*
 * extended list of emails: *"Nom_1 Prenom" <email_1@domain.org>, "Nom_2 Prenom" <email_2@domain.org>*
 * full freedivers information
-
-
+```
     Prenom Nom_1          indoor/outdoor RIFAA     CACI      2021-09-20  L2 email@domain.org
     Prenom Nom_2          indoor/outdoor NO RIFAA  CACI      2021-09-20  L1 email@domain.org
     Prenom Nom_3          indoor/outdoor RIFAA     QS        2021-09-20  L1 email@domain.org
     Prenom Nom_4          indoor/outdoor RIFAA     NO certif 2021-09-20  L2 email@domain.org
+```
 
 if no date (in yyyy-mm-dd format) is provided *today* is used
 
