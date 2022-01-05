@@ -38,9 +38,9 @@ class TestMasa(MasaTest):
 
     def test_parse_data(self):
         data = masa.parse_data(self.path)
-        self.assertEqual(data.shape, (10, 9))
+        self.assertEqual(data.shape, (10, 10))
         self.assertEqual(data.columns.to_list(),
-                         ['nom', 'prenom', 'email', 'indoor', 'outdoor', 'rifaa', 'CACI', 'QS', 'date']
+                         ['nom', 'prenom', 'email', 'indoor', 'outdoor', 'rifaa', 'CACI', 'QS', 'date', 'ligne']
                          )
         self.assertTrue(pandas.api.types.is_datetime64_dtype(data.date.dtypes))
 
@@ -64,16 +64,16 @@ class TestMasa(MasaTest):
         data = masa.parse_data(self.path)
         data_str = masa.to_string(data)
         expected = [
-            "rien TOTO                rien/rien  NO RIFAA  CACI      2021-01-01  toto@rien.org",
-            "ap-rien TITI             AP/rien    RIFAA     CACI      2021-02-01  titi@ap.org",
-            "ap-rien-no-riffa TITI    AP/rien    NO RIFAA  CACI      2021-02-01  titi.no_riffa@ap.org",
-            "acp-rien TUTU            ACP/rien   NO RIFAA  CACI      2021-03-01  tutu@acp.org",
-            "rien-ael TATA            rien/AEL   RIFAA     CACI      2021-04-01  tata@ael.org",
-            "ap-ael truc              AP/AEL     NO RIFAA  CACI      2021-05-01  truc@aeel.org",
-            "ap-acel bidule           AP/ACEL    NO RIFAA  CACI      2021-06-01  bidule@acel.org",
-            "ap-aeel foo              AP/AEEL    RIFAA     CACI      2021-07-01  foo@aeel.org",
-            "ap-aeel bar              AP/AEEL    RIFAA     QS        2021-08-01  bar@aeel.qs",
-            "ap-aeel nulle            AP/AEEL    RIFAA     NO certif 2021-08-01  null@aeel.void",
+            "rien TOTO                rien/rien  NO RIFAA  CACI      2021-01-01  L1 toto@rien.org",
+            "ap-rien TITI             AP/rien    RIFAA     CACI      2021-02-01  L1 titi@ap.org",
+            "ap-rien-no-riffa TITI    AP/rien    NO RIFAA  CACI      2021-02-01  L1 titi.no_riffa@ap.org",
+            "acp-rien TUTU            ACP/rien   NO RIFAA  CACI      2021-03-01  L2 tutu@acp.org",
+            "rien-ael TATA            rien/AEL   RIFAA     CACI      2021-04-01  L2 tata@ael.org",
+            "ap-ael truc              AP/AEL     NO RIFAA  CACI      2021-05-01  L1 truc@aeel.org",
+            "ap-acel bidule           AP/ACEL    NO RIFAA  CACI      2021-06-01  L2 bidule@acel.org",
+            "ap-aeel foo              AP/AEEL    RIFAA     CACI      2021-07-01  L2 foo@aeel.org",
+            "ap-aeel bar              AP/AEEL    RIFAA     QS        2021-08-01  L2 bar@aeel.qs",
+            "ap-aeel nulle            AP/AEEL    RIFAA     NO certif 2021-08-01  L2 null@aeel.void",
         ]
         self.assertListEqual(data_str.to_list(),
                              expected)
