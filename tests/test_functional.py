@@ -198,14 +198,22 @@ masa: error: argument --valid: cannot parse '2022-30-01' as date: month must be 
         with self.catch_io(out=True):
             masa_email.main(args=cmd.split()[1:])
             emails = sys.stdout.getvalue().strip()
-        self.maxDiff = None
-        self.assertEqual(emails, """rien TOTO                rien/rien  NO RIFAA  CACI      2021-01-01  toto@rien.org
-ap-rien TITI             AP/rien    RIFAA     CACI      2021-02-01  titi@ap.org
-ap-rien-no-riffa TITI    AP/rien    NO RIFAA  CACI      2021-02-01  titi.no_riffa@ap.org
-acp-rien TUTU            ACP/rien   NO RIFAA  CACI      2021-03-01  tutu@acp.org
-rien-ael TATA            rien/AEL   RIFAA     CACI      2021-04-01  tata@ael.org
-ap-ael truc              AP/AEL     NO RIFAA  CACI      2021-05-01  truc@aeel.org
-ap-acel bidule           AP/ACEL    NO RIFAA  CACI      2021-06-01  bidule@acel.org
-ap-aeel foo              AP/AEEL    RIFAA     CACI      2021-07-01  foo@aeel.org
-ap-aeel bar              AP/AEEL    RIFAA     QS        2021-08-01  bar@aeel.qs
-ap-aeel nulle            AP/AEEL    RIFAA     NO certif 2021-08-01  null@aeel.void""")
+        self.assertEqual(emails, """rien TOTO                rien/rien  NO RIFAA  CACI      2021-01-01  L1 toto@rien.org
+ap-rien TITI             AP/rien    RIFAA     CACI      2021-02-01  L1 titi@ap.org
+ap-rien-no-riffa TITI    AP/rien    NO RIFAA  CACI      2021-02-01  L1 titi.no_riffa@ap.org
+acp-rien TUTU            ACP/rien   NO RIFAA  CACI      2021-03-01  L2 tutu@acp.org
+rien-ael TATA            rien/AEL   RIFAA     CACI      2021-04-01  L2 tata@ael.org
+ap-ael truc              AP/AEL     NO RIFAA  CACI      2021-05-01  L1 truc@aeel.org
+ap-acel bidule           AP/ACEL    NO RIFAA  CACI      2021-06-01  L2 bidule@acel.org
+ap-aeel foo              AP/AEEL    RIFAA     CACI      2021-07-01  L2 foo@aeel.org
+ap-aeel bar              AP/AEEL    RIFAA     QS        2021-08-01  L2 bar@aeel.qs
+ap-aeel nulle            AP/AEEL    RIFAA     NO certif 2021-08-01  L2 null@aeel.void""")
+
+    def test_data_file(self):
+        data_path = self.find_data('masa.tsv')
+        cmd = f"masa --all --l1 --data {data_path}"
+        with self.catch_io(out=True):
+            masa_email.main(args=cmd.split()[1:])
+            emails = sys.stdout.getvalue().strip()
+        self.assertEqual(emails,
+                         'toto@rien.org, titi@ap.org, titi.no_riffa@ap.org, truc@aeel.org')
