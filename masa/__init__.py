@@ -25,7 +25,7 @@ import pkg_resources
 
 import pandas as pd
 
-__version__ = '{}'.format(strftime("%Y%m%d", localtime()))
+__version__ = '20220105'
 __DATA__ = pkg_resources.resource_filename('masa', "data")
 
 
