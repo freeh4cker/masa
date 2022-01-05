@@ -81,6 +81,7 @@ The available options are listed bellow
       --l2                  Filter only divers in Ligne 2.
                             - This option must be combined with previous ones.
                             - This option is mutually exclusive with --L1
+      --data DATA           The path to the 'masa.tsv' data file, by default provide with release
       --version             show program's version number and exit
       -v, --verbose         increase verbosity
                             -v displays email in long version "Prenom Nom" <email>'

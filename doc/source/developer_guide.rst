@@ -57,6 +57,11 @@ Reference API
    :private-members:
    :special-members:
 
+.. automodule:: masa.utils
+   :members:
+   :private-members:
+   :special-members:
+
 .. automodule:: masa.scripts.masa_email
    :members:
    :private-members:
