@@ -80,7 +80,7 @@ def to_string(data):
             caci = 'NO certif'
 
         rifaa = 'RIFAA' if row.rifaa else 'NO RIFAA'
-        return f"{name: <25}{level: <11}{rifaa: <10}{caci: <10}{row.date.strftime('%Y-%m-%d')}  L{row.ligne} {row.email} "
+        return f"{name: <25}{level: <11}{rifaa: <10}{caci: <10}{row.date.strftime('%Y-%m-%d')}  L{row.ligne} {row.email}"
 
     return data.apply(format, axis=1)
 
