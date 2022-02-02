@@ -19,10 +19,10 @@ the output can be a
 
 .. code-block:: text
 
-    Prenom Nom_1          indoor/outdoor RIFAA     CACI      2021-09-20  L2 email@domain.org
-    Prenom Nom_2          indoor/outdoor NO RIFAA  CACI      2021-09-20  L1 email@domain.org
-    Prenom Nom_3          indoor/outdoor RIFAA     QS        2021-09-20  L1 email@domain.org
-    Prenom Nom_4          indoor/outdoor RIFAA     NO certif 2021-09-20  L2 email@domain.org
+    Prenom Nom_1          A-13-000001  indoor/outdoor RIFAA     CACI      2021-09-20  L2 email@domain.org
+    Prenom Nom_2          A-13-000011  indoor/outdoor NO RIFAA  CACI      2021-09-20  L1 email@domain.org
+    Prenom Nom_3          A-13-000111  indoor/outdoor RIFAA     QS        2021-09-20  L1 email@domain.org
+    Prenom Nom_4          A-13-001111  indoor/outdoor RIFAA     NO certif 2021-09-20  L2 email@domain.org
 
 if no date (in yyyy-mm-dd format) is provided *today* is used
 
@@ -85,7 +85,7 @@ The available options are listed bellow
       --version             show program's version number and exit
       -v, --verbose         increase verbosity
                             -v displays email in long version "Prenom Nom" <email>'
-                            -vv displays all info Prenom Nom indoor/outdoor rifaa CACI|QS date email
+                            -vv displays all info Prenom Nom licence indoor/outdoor rifaa CACI|QS date email
 
 
 Installation
