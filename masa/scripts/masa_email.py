@@ -25,6 +25,7 @@ from textwrap import dedent
 
 import masa
 import masa.utils
+from masa import parse
 
 
 def parse_args(args):
@@ -122,7 +123,7 @@ expire at today + delta time (in days) (default=15 days)""")
                         action="count",
                         help="""increase verbosity
 -v displays email in long version "Prenom Nom" <email>'
--vv displays all info Prenom Nom indoor/outdoor rifaa CACI|QS date email"""
+-vv displays all info Prenom Nom licence indoor/outdoor rifaa CACI|QS date email"""
                         )
     parsed_args = parser.parse_args(args)
     return parser, parsed_args
@@ -137,25 +138,25 @@ def main(args=None):
     else:
         data_file = os.path.join(masa.__DATA__, 'masa.tsv')
 
-    data = masa.parse_data(data_file)
+    data = parse.parse_data(data_file)
     if parsed_args.autonomie_absolue_piscine:
-        selection = masa.autonomie_absolue_piscine(data, target_date=parsed_args.autonomie_absolue_piscine)
+        selection = parse.autonomie_absolue_piscine(data, target_date=parsed_args.autonomie_absolue_piscine)
     elif parsed_args.autonomie_relative_piscine:
-        selection = masa.autonomie_relative_piscine(data, target_date=parsed_args.autonomie_relative_piscine)
+        selection = parse.autonomie_relative_piscine(data, target_date=parsed_args.autonomie_relative_piscine)
     elif parsed_args.fosse:
-        selection = masa.fosse(data, target_date=parsed_args.fosse)
+        selection = parse.fosse(data, target_date=parsed_args.fosse)
     elif parsed_args.profondeur:
-        selection = masa.profondeur(data, target_date=parsed_args.profondeur)
+        selection = parse.profondeur(data, target_date=parsed_args.profondeur)
     elif parsed_args.rifaa:
-        selection = masa.rifaa(data)
+        selection = parse.rifaa(data)
     elif parsed_args.no_rifaa:
-        selection = masa.no_rifaa(data)
+        selection = parse.no_rifaa(data)
     elif parsed_args.valid:
-        selection = masa.certif_valid_at(data, target_date=parsed_args.valid)
+        selection = parse.certif_valid_at(data, target_date=parsed_args.valid)
     elif parsed_args.not_valid:
-        selection = masa.certif_not_valid_at(data, target_date=parsed_args.not_valid)
+        selection = parse.certif_not_valid_at(data, target_date=parsed_args.not_valid)
     elif parsed_args.warning:
-        selection = masa.warning(data, time_delta=parsed_args.warning)
+        selection = parse.warning(data, time_delta=parsed_args.warning)
     elif parsed_args.all:
         selection = data
     else:
@@ -164,18 +165,18 @@ def main(args=None):
         sys.exit(2)
 
     if parsed_args.ligne_1:
-        selection = masa.ligne(selection, ligne=1)
+        selection = parse.ligne(selection, ligne=1)
     elif parsed_args.ligne_2:
-        selection = masa.ligne(selection, ligne=2)
+        selection = parse.ligne(selection, ligne=2)
 
     if parsed_args.verbose == 0:
-        emails = masa.to_emails(selection, verbose=False)
+        emails = parse.to_emails(selection, verbose=False)
         sep = ', '
     elif parsed_args.verbose == 1:
-        emails = masa.to_emails(selection, verbose=True)
+        emails = parse.to_emails(selection, verbose=True)
         sep = ', '
     else:
-        emails = masa.to_string(selection)
+        emails = parse.to_string(selection)
         sep = '\n'
 
     print(sep.join(emails))
