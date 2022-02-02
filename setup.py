@@ -1,6 +1,6 @@
 import os.path
 import setuptools
-
+from time import strftime, localtime
 
 def expand_data(data_to_expand):
     """
@@ -40,6 +40,7 @@ def expand_data(data_to_expand):
 
 if __name__ == "__main__":
     setuptools.setup(
+        version=strftime("%Y%m%d", localtime()),
         package_data={
             "masa": ["data/*"]
         },
